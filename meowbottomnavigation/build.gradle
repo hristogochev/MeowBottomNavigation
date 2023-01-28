@@ -39,7 +39,7 @@ afterEvaluate{
                 from components.release
 
                 groupId="com.hristogochev"
-                artifactId="meow-bottom-navigation"
+                artifactId="MeowBottomNavigation"
                 version="1.2.0"
             }
         }
