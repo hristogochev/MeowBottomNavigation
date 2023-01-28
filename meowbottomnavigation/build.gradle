@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.etebarian.meowbottomnavigation'
     compileSdkVersion 33
 
     defaultConfig {
@@ -29,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.6.0"
+    implementation 'androidx.interpolator:interpolator:1.0.0'
 }
 
 afterEvaluate{
@@ -38,9 +39,9 @@ afterEvaluate{
             release(MavenPublication){
                 from components.release
 
-                groupId="com.hristogochev"
-                artifactId="MeowBottomNavigation"
-                version="1.2.0"
+                groupId = "com.hristogochev"
+                artifactId = "meow-bottom-navigation"
+                version = "1.2.0"
             }
         }
     }

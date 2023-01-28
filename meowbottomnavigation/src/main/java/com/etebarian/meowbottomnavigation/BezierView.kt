@@ -78,7 +78,7 @@ class BezierView : View {
             invalidate()
         }
 
-    @SuppressLint("NewApi")
+    @SuppressLint("unused")
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         initializeViews()
     }

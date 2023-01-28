@@ -3,7 +3,7 @@ package com.etebarian.meowbottomnavigation
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatImageView
+import android.widget.ImageView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import kotlin.math.ceil
 
@@ -12,7 +12,7 @@ import kotlin.math.ceil
  */
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-internal class CellImageView : AppCompatImageView {
+internal class CellImageView : ImageView {
 
     var isBitmap = false
         set(value) {
@@ -101,7 +101,7 @@ internal class CellImageView : AppCompatImageView {
         if (isBitmap) {
             try {
                 val drawable =
-                    if (color == 0) context.getDrawableCompat(resource) else DrawableHelper.changeColorDrawableRes(
+                    if (color == 0) context.getDrawable(resource) else DrawableHelper.changeColorDrawableRes(
                         context,
                         resource,
                         color

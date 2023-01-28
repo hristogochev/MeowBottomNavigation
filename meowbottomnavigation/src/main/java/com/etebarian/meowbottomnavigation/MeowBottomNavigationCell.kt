@@ -11,7 +11,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.etebarian.meowbottomnavigation.databinding.MeowNavigationCellBinding
 
@@ -19,7 +18,6 @@ import com.etebarian.meowbottomnavigation.databinding.MeowNavigationCellBinding
  * Created by 1HE on 2/23/2019.
  */
 
-@Suppress("unused")
 class MeowBottomNavigationCell : RelativeLayout {
 
     private lateinit var binding: MeowNavigationCellBinding
@@ -98,7 +96,7 @@ class MeowBottomNavigationCell : RelativeLayout {
                 val d = GradientDrawable()
                 d.setColor(field)
                 d.shape = GradientDrawable.OVAL
-                ViewCompat.setBackground(binding.tvCount, d)
+                binding.tvCount.background = d
             }
         }
 
@@ -133,12 +131,11 @@ class MeowBottomNavigationCell : RelativeLayout {
             d.setColor(circleColor)
             d.shape = GradientDrawable.OVAL
 
-            ViewCompat.setBackground(binding.vCircle, d)
 
-            ViewCompat.setElevation(
-                binding.vCircle,
+            binding.vCircle.background = d
+
+            binding.vCircle.elevation =
                 if (progress > 0.7f) dipf(context, progress * 4f) else 0f
-            )
 
             val m = dip(context, 24)
             binding.vCircle.x =
@@ -198,7 +195,7 @@ class MeowBottomNavigationCell : RelativeLayout {
 
     private fun initializeView() {
         allowDraw = true
-        binding = MeowNavigationCellBinding.inflate(LayoutInflater.from(context),this)
+        binding = MeowNavigationCellBinding.inflate(LayoutInflater.from(context), this)
         draw()
     }
 

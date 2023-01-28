@@ -1,12 +1,9 @@
 package com.etebarian.meowbottomnavigation
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import java.lang.Exception
 
 /**
  * Created by 1HE on 2/23/2019.
@@ -26,10 +23,10 @@ internal object DrawableHelper {
         if (c == null)
             return null
 
-        val d = VectorDrawableCompat.create(c.resources, resDrawable, null) ?: return null
+        val d = c.getDrawable(resDrawable) as VectorDrawable
         d.mutate()
         if (color != -2)
-            d.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            d.setTint(color)
         return d
     }
 
@@ -37,10 +34,10 @@ internal object DrawableHelper {
         if (c == null)
             return null
 
-        val d = ContextCompat.getDrawable(c, resDrawable) ?: return null
+        val d = c.getDrawable(resDrawable) ?: return null
         d.mutate()
         if (color != -2)
-            d.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            d.setTint(color)
         return d
     }
 }
@@ -66,8 +63,6 @@ internal object ColorHelper {
         return a shl alphaChannel or (r shl redChannel) or (g shl greenChannel) or b
     }
 }
-
-internal fun Context.getDrawableCompat(res: Int) = ContextCompat.getDrawable(this, res)
 
 internal inline fun <T : View?> T.runAfterDelay(delay: Long, crossinline f: T.() -> Unit) {
     this?.postDelayed({
