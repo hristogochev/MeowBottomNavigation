@@ -7,22 +7,22 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
-import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.meow_navigation_cell.view.*
+import com.etebarian.meowbottomnavigation.databinding.MeowNavigationCellBinding
 
 /**
  * Created by 1HE on 2/23/2019.
  */
 
 @Suppress("unused")
-class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
+class MeowBottomNavigationCell : RelativeLayout {
+
+    private lateinit var binding: MeowNavigationCellBinding
 
     companion object {
         const val EMPTY_VALUE = "empty"
@@ -32,13 +32,13 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
         set(value) {
             field = value
             if (allowDraw)
-                iv.color = if (!isEnabledCell) defaultIconColor else selectedIconColor
+                binding.iv.color = if (!isEnabledCell) defaultIconColor else selectedIconColor
         }
     var selectedIconColor = 0
         set(value) {
             field = value
             if (allowDraw)
-                iv.color = if (isEnabledCell) selectedIconColor else defaultIconColor
+                binding.iv.color = if (isEnabledCell) selectedIconColor else defaultIconColor
         }
     var circleColor = 0
         set(value) {
@@ -51,7 +51,7 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
         set(value) {
             field = value
             if (allowDraw)
-                iv.resource = value
+                binding.iv.resource = value
         }
 
     var count: String? = EMPTY_VALUE
@@ -59,17 +59,17 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
             field = value
             if (allowDraw) {
                 if (count != null && count == EMPTY_VALUE) {
-                    tv_count.text = ""
-                    tv_count.visibility = View.INVISIBLE
+                    binding.tvCount.text = ""
+                    binding.tvCount.visibility = View.INVISIBLE
                 } else {
-                    if (count != null && count?.length ?: 0 >= 3) {
+                    if (count != null && (count?.length ?: 0) >= 3) {
                         field = count?.substring(0, 1) + ".."
                     }
-                    tv_count.text = count
-                    tv_count.visibility = View.VISIBLE
+                    binding.tvCount.text = count
+                    binding.tvCount.visibility = View.VISIBLE
                     val scale = if (count?.isEmpty() == true) 0.5f else 1f
-                    tv_count.scaleX = scale
-                    tv_count.scaleY = scale
+                    binding.tvCount.scaleX = scale
+                    binding.tvCount.scaleY = scale
                 }
             }
         }
@@ -78,9 +78,9 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
         set(value) {
             field = value
             if (allowDraw) {
-                iv.size = value
-                iv.pivotX = iconSize / 2f
-                iv.pivotY = iconSize / 2f
+                binding.iv.size = value
+                binding.iv.pivotX = iconSize / 2f
+                binding.iv.pivotY = iconSize / 2f
             }
         }
 
@@ -88,7 +88,7 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
         set(value) {
             field = value
             if (allowDraw)
-                tv_count.setTextColor(field)
+                binding.tvCount.setTextColor(field)
         }
 
     var countBackgroundColor = 0
@@ -98,7 +98,7 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
                 val d = GradientDrawable()
                 d.setColor(field)
                 d.shape = GradientDrawable.OVAL
-                ViewCompat.setBackground(tv_count, d)
+                ViewCompat.setBackground(binding.tvCount, d)
             }
         }
 
@@ -106,7 +106,7 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
         set(value) {
             field = value
             if (allowDraw && field != null)
-                tv_count.typeface = field
+                binding.tvCount.typeface = field
         }
 
     var rippleColor = 0
@@ -122,24 +122,31 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
     private var progress = 0f
         set(value) {
             field = value
-            fl.y = (1f - progress) * dip(context, 18) + dip(context, -2)
+            binding.fl.y = (1f - progress) * dip(context, 18) + dip(context, -2)
 
-            iv.color = if (progress == 1f) selectedIconColor else defaultIconColor
+            binding.iv.color = if (progress == 1f) selectedIconColor else defaultIconColor
             val scale = (1f - progress) * (-0.2f) + 1f
-            iv.scaleX = scale
-            iv.scaleY = scale
+            binding.iv.scaleX = scale
+            binding.iv.scaleY = scale
 
             val d = GradientDrawable()
             d.setColor(circleColor)
             d.shape = GradientDrawable.OVAL
 
-            ViewCompat.setBackground(v_circle, d)
+            ViewCompat.setBackground(binding.vCircle, d)
 
-            ViewCompat.setElevation(v_circle, if (progress > 0.7f) dipf(context, progress * 4f) else 0f)
+            ViewCompat.setElevation(
+                binding.vCircle,
+                if (progress > 0.7f) dipf(context, progress * 4f) else 0f
+            )
 
             val m = dip(context, 24)
-            v_circle.x = (1f - progress) * (if (isFromLeft) -m else m) + ((measuredWidth - dip(context, 48)) / 2f)
-            v_circle.y = (1f - progress) * measuredHeight + dip(context, 6)
+            binding.vCircle.x =
+                (1f - progress) * (if (isFromLeft) -m else m) + ((measuredWidth - dip(
+                    context,
+                    48
+                )) / 2f)
+            binding.vCircle.y = (1f - progress) * measuredHeight + dip(context, 6)
         }
 
     var isEnabledCell = false
@@ -148,11 +155,11 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
             val d = GradientDrawable()
             d.setColor(circleColor)
             d.shape = GradientDrawable.OVAL
-            if (Build.VERSION.SDK_INT >= 21 && !isEnabledCell) {
-                fl.background = RippleDrawable(ColorStateList.valueOf(rippleColor), null, d)
+            if (!isEnabledCell) {
+                binding.fl.background = RippleDrawable(ColorStateList.valueOf(rippleColor), null, d)
             } else {
-                fl.runAfterDelay(200) {
-                    fl.setBackgroundColor(Color.TRANSPARENT)
+                binding.fl.runAfterDelay(200) {
+                    binding.fl.setBackgroundColor(Color.TRANSPARENT)
                 }
             }
         }
@@ -160,12 +167,11 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
     var onClickListener: () -> Unit = {}
         set(value) {
             field = value
-            iv?.setOnClickListener {
+            binding.iv.setOnClickListener {
                 onClickListener()
             }
         }
 
-    override lateinit var containerView: View
     private var allowDraw = false
 
     constructor(context: Context) : super(context) {
@@ -177,7 +183,11 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
         initializeView()
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         setAttributeFromXml(context, attrs)
         initializeView()
     }
@@ -188,7 +198,7 @@ class MeowBottomNavigationCell : RelativeLayout, LayoutContainer {
 
     private fun initializeView() {
         allowDraw = true
-        containerView = LayoutInflater.from(context).inflate(R.layout.meow_navigation_cell, this)
+        binding = MeowNavigationCellBinding.inflate(LayoutInflater.from(context),this)
         draw()
     }
 

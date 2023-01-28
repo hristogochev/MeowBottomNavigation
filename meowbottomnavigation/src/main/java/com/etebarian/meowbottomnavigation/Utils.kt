@@ -14,13 +14,13 @@ import java.lang.Exception
 
 private fun getDP(context: Context) = context.resources.displayMetrics.density
 
-internal fun dipf(context: Context,f: Float) = f * getDP(context)
+internal fun dipf(context: Context, f: Float) = f * getDP(context)
 
-internal fun dipf(context: Context,i: Int) = i * getDP(context)
+internal fun dipf(context: Context, i: Int) = i * getDP(context)
 
-internal fun dip(context: Context,i: Int) = (i * getDP(context)).toInt()
+internal fun dip(context: Context, i: Int) = (i * getDP(context)).toInt()
 
-internal object DrawableHelper{
+internal object DrawableHelper {
 
     fun changeColorDrawableVector(c: Context?, resDrawable: Int, color: Int): Drawable? {
         if (c == null)
@@ -45,7 +45,7 @@ internal object DrawableHelper{
     }
 }
 
-internal object ColorHelper{
+internal object ColorHelper {
 
     fun mixTwoColors(color1: Int, color2: Int, amount: Float): Int {
         val alphaChannel = 24
@@ -54,10 +54,14 @@ internal object ColorHelper{
 
         val inverseAmount = 1.0f - amount
 
-        val a = ((color1 shr alphaChannel and 0xff).toFloat() * amount + (color2 shr alphaChannel and 0xff).toFloat() * inverseAmount).toInt() and 0xff
-        val r = ((color1 shr redChannel and 0xff).toFloat() * amount + (color2 shr redChannel and 0xff).toFloat() * inverseAmount).toInt() and 0xff
-        val g = ((color1 shr greenChannel and 0xff).toFloat() * amount + (color2 shr greenChannel and 0xff).toFloat() * inverseAmount).toInt() and 0xff
-        val b = ((color1 and 0xff).toFloat() * amount + (color2 and 0xff).toFloat() * inverseAmount).toInt() and 0xff
+        val a =
+            ((color1 shr alphaChannel and 0xff).toFloat() * amount + (color2 shr alphaChannel and 0xff).toFloat() * inverseAmount).toInt() and 0xff
+        val r =
+            ((color1 shr redChannel and 0xff).toFloat() * amount + (color2 shr redChannel and 0xff).toFloat() * inverseAmount).toInt() and 0xff
+        val g =
+            ((color1 shr greenChannel and 0xff).toFloat() * amount + (color2 shr greenChannel and 0xff).toFloat() * inverseAmount).toInt() and 0xff
+        val b =
+            ((color1 and 0xff).toFloat() * amount + (color2 and 0xff).toFloat() * inverseAmount).toInt() and 0xff
 
         return a shl alphaChannel or (r shl redChannel) or (g shl greenChannel) or b
     }
@@ -67,6 +71,9 @@ internal fun Context.getDrawableCompat(res: Int) = ContextCompat.getDrawable(thi
 
 internal inline fun <T : View?> T.runAfterDelay(delay: Long, crossinline f: T.() -> Unit) {
     this?.postDelayed({
-        try { f() }catch (e:Exception){}
+        try {
+            f()
+        } catch (_: Exception) {
+        }
     }, delay)
 }

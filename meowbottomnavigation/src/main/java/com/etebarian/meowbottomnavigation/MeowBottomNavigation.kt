@@ -6,7 +6,6 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.Build
 import android.util.AttributeSet
 import android.util.LayoutDirection
 import android.view.Gravity
@@ -79,11 +78,16 @@ class MeowBottomNavigation : FrameLayout {
     private var allowDraw = false
 
     @Suppress("PrivatePropertyName")
-    private lateinit var ll_cells: LinearLayout
+    private lateinit var cellsLayout: LinearLayout
     private lateinit var bezierView: BezierView
 
     init {
         heightCell = dip(context, 72)
+    }
+
+    constructor(context: Context, shadowColor: Int) : super(context) {
+        this.shadowColor = shadowColor
+        initializeViews()
     }
 
     constructor(context: Context) : super(context) {
@@ -95,7 +99,11 @@ class MeowBottomNavigation : FrameLayout {
         initializeViews()
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         setAttributeFromXml(context, attrs)
         initializeViews()
     }
@@ -104,14 +112,30 @@ class MeowBottomNavigation : FrameLayout {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.MeowBottomNavigation, 0, 0)
         try {
             a.apply {
-                defaultIconColor = getColor(R.styleable.MeowBottomNavigation_mbn_defaultIconColor, defaultIconColor)
-                selectedIconColor = getColor(R.styleable.MeowBottomNavigation_mbn_selectedIconColor, selectedIconColor)
-                backgroundBottomColor = getColor(R.styleable.MeowBottomNavigation_mbn_backgroundBottomColor, backgroundBottomColor)
-                circleColor = getColor(R.styleable.MeowBottomNavigation_mbn_circleColor, circleColor)
-                countTextColor = getColor(R.styleable.MeowBottomNavigation_mbn_countTextColor, countTextColor)
-                countBackgroundColor = getColor(R.styleable.MeowBottomNavigation_mbn_countBackgroundColor, countBackgroundColor)
-                rippleColor = getColor(R.styleable.MeowBottomNavigation_mbn_rippleColor, rippleColor)
-                shadowColor = getColor(R.styleable.MeowBottomNavigation_mbn_shadowColor, shadowColor)
+                defaultIconColor = getColor(
+                    R.styleable.MeowBottomNavigation_mbn_defaultIconColor,
+                    defaultIconColor
+                )
+                selectedIconColor = getColor(
+                    R.styleable.MeowBottomNavigation_mbn_selectedIconColor,
+                    selectedIconColor
+                )
+                backgroundBottomColor = getColor(
+                    R.styleable.MeowBottomNavigation_mbn_backgroundBottomColor,
+                    backgroundBottomColor
+                )
+                circleColor =
+                    getColor(R.styleable.MeowBottomNavigation_mbn_circleColor, circleColor)
+                countTextColor =
+                    getColor(R.styleable.MeowBottomNavigation_mbn_countTextColor, countTextColor)
+                countBackgroundColor = getColor(
+                    R.styleable.MeowBottomNavigation_mbn_countBackgroundColor,
+                    countBackgroundColor
+                )
+                rippleColor =
+                    getColor(R.styleable.MeowBottomNavigation_mbn_rippleColor, rippleColor)
+                shadowColor =
+                    getColor(R.styleable.MeowBottomNavigation_mbn_shadowColor, shadowColor)
 
                 val typeface = getString(R.styleable.MeowBottomNavigation_mbn_countTypeface)
                 if (typeface != null && typeface.isNotEmpty())
@@ -123,8 +147,7 @@ class MeowBottomNavigation : FrameLayout {
     }
 
     private fun initializeViews() {
-        ll_cells = LinearLayout(context)
-        ll_cells.apply {
+        cellsLayout = LinearLayout(context).apply {
             val params = LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, heightCell)
             params.gravity = Gravity.BOTTOM
             layoutParams = params
@@ -133,22 +156,24 @@ class MeowBottomNavigation : FrameLayout {
             clipToPadding = false
         }
 
-        bezierView = BezierView(context)
-        bezierView.apply {
+        bezierView = BezierView(context).apply {
             layoutParams = LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, heightCell)
             color = backgroundBottomColor
             shadowColor = this@MeowBottomNavigation.shadowColor
         }
 
         addView(bezierView)
-        addView(ll_cells)
+        addView(cellsLayout)
         allowDraw = true
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if (selectedId == -1) {
-            bezierView.bezierX = if (Build.VERSION.SDK_INT >= 17 && layoutDirection == LayoutDirection.RTL) measuredWidth + dipf(context, 72) else -dipf(context, 72)
+            bezierView.bezierX = if (layoutDirection == LayoutDirection.RTL) measuredWidth + dipf(
+                context,
+                72
+            ) else -dipf(context, 72)
         }
         if (selectedId != -1) {
             show(selectedId, false)
@@ -182,7 +207,7 @@ class MeowBottomNavigation : FrameLayout {
                 }
             }
             disableCell()
-            ll_cells.addView(this)
+            cellsLayout.addView(this)
         }
 
         cells.add(cell)
@@ -282,7 +307,7 @@ class MeowBottomNavigation : FrameLayout {
         return null
     }
 
-    fun getCellById(id: Int): MeowBottomNavigationCell? {
+    fun getCellById(id: Int): MeowBottomNavigationCell {
         return cells[getModelPosition(id)]
     }
 

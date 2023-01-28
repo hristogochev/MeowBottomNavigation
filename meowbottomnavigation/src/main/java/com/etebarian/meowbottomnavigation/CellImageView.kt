@@ -11,7 +11,7 @@ import kotlin.math.ceil
  * Created by 1HE on 2/23/2019.
  */
 
-@Suppress("unused", "LeakingThis", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 internal class CellImageView : AppCompatImageView {
 
     var isBitmap = false
@@ -54,7 +54,11 @@ internal class CellImageView : AppCompatImageView {
         initializeView()
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         setAttributeFromXml(context, attrs)
         initializeView()
     }
@@ -65,11 +69,16 @@ internal class CellImageView : AppCompatImageView {
             a.apply {
                 isBitmap = getBoolean(R.styleable.CellImageView_meow_imageview_isBitmap, isBitmap)
                 useColor = getBoolean(R.styleable.CellImageView_meow_imageview_useColor, useColor)
-                resource = getResourceId(R.styleable.CellImageView_meow_imageview_resource, resource)
+                resource =
+                    getResourceId(R.styleable.CellImageView_meow_imageview_resource, resource)
                 color = getColor(R.styleable.CellImageView_meow_imageview_color, color)
                 size = getDimensionPixelSize(R.styleable.CellImageView_meow_imageview_size, size)
-                actionBackgroundAlpha = getBoolean(R.styleable.CellImageView_meow_imageview_actionBackgroundAlpha, actionBackgroundAlpha)
-                changeSize = getBoolean(R.styleable.CellImageView_meow_imageview_changeSize, changeSize)
+                actionBackgroundAlpha = getBoolean(
+                    R.styleable.CellImageView_meow_imageview_actionBackgroundAlpha,
+                    actionBackgroundAlpha
+                )
+                changeSize =
+                    getBoolean(R.styleable.CellImageView_meow_imageview_changeSize, changeSize)
                 fitImage = getBoolean(R.styleable.CellImageView_meow_imageview_fitImage, fitImage)
             }
         } finally {
@@ -91,7 +100,12 @@ internal class CellImageView : AppCompatImageView {
 
         if (isBitmap) {
             try {
-                val drawable = if (color == 0) context.getDrawableCompat(resource) else DrawableHelper.changeColorDrawableRes(context, resource, color)
+                val drawable =
+                    if (color == 0) context.getDrawableCompat(resource) else DrawableHelper.changeColorDrawableRes(
+                        context,
+                        resource,
+                        color
+                    )
                 setImageDrawable(drawable)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -136,7 +150,8 @@ internal class CellImageView : AppCompatImageView {
             val d = drawable
             if (d != null) {
                 val width = MeasureSpec.getSize(widthMeasureSpec)
-                val height = ceil((width.toFloat() * d.intrinsicHeight.toFloat() / d.intrinsicWidth).toDouble()).toInt()
+                val height =
+                    ceil((width.toFloat() * d.intrinsicHeight.toFloat() / d.intrinsicWidth).toDouble()).toInt()
                 setMeasuredDimension(width, height)
             } else {
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec)
