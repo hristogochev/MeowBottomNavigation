@@ -28,7 +28,7 @@ class MeowBottomNavigation : FrameLayout {
         private set
     private var callListenerWhenIsSelected = false
 
-    private var selectedId = -1
+    var selectedId = -1
 
     private var onClickedListener: IBottomNavigationListener = {}
     private var onShowListener: IBottomNavigationListener = {}
@@ -77,7 +77,6 @@ class MeowBottomNavigation : FrameLayout {
 
     private var allowDraw = false
 
-    @Suppress("PrivatePropertyName")
     private lateinit var cellsLayout: LinearLayout
     private lateinit var bezierView: BezierView
 
@@ -138,7 +137,7 @@ class MeowBottomNavigation : FrameLayout {
                     getColor(R.styleable.MeowBottomNavigation_mbn_shadowColor, shadowColor)
 
                 val typeface = getString(R.styleable.MeowBottomNavigation_mbn_countTypeface)
-                if (typeface != null && typeface.isNotEmpty())
+                if (!typeface.isNullOrEmpty())
                     countTypeface = Typeface.createFromAsset(context.assets, typeface)
             }
         } finally {
@@ -278,6 +277,19 @@ class MeowBottomNavigation : FrameLayout {
         cells.forEach {
             it.duration = d
         }
+    }
+
+    fun setSelectedId(id: Int, enableAnimation: Boolean = true){
+        models.forEachIndexed { index,model->
+            val cell = cells[index]
+            if (model.id == id) {
+                anim(cell, id, enableAnimation)
+                cell.enableCell()
+            } else {
+                cell.disableCell()
+            }
+        }
+        selectedId = id
     }
 
     fun show(id: Int, enableAnimation: Boolean = true) {

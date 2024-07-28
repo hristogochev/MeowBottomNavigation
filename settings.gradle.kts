@@ -1,8 +1,13 @@
+@file:Suppress("UnstableApiUsage")
+
+rootProject.name = "MeowBottomNavigation"
+//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -13,5 +18,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MeowBottomNavigation"
-include ':meowbottomnavigation'
+include(":meowbottomnavigation")
+

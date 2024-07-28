@@ -1,0 +1,15 @@
+[versions]
+agp = "8.2.2"
+kotlin = "2.0.0"
+android-compileSdk = "33"
+android-minSdk = "21"
+interpolator="1.0.0"
+[libraries]
+interpolator = { module = "androidx.interpolator:interpolator", version.ref = "interpolator" }
+
+
+[plugins]
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+
